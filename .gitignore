@@ -1,0 +1,5 @@
+.env
+*.tar
+node_modules/
+portal/node_modules/
+ignore/

@@ -1,0 +1,37 @@
+services:
+  ursim:
+    image: ursim-secure:5.26.0-ctf
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ${ENV_FILE:-.env}
+    environment:
+      ROBOT_MODEL: ${ROBOT_MODEL:-UR5}
+    ports:
+      - "${SSH_PORT:-2222}:22"
+    expose:
+      - "5900"
+      - "6080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -x cron >/dev/null && pgrep -x sshd >/dev/null && curl -fsS http://127.0.0.1:6080/vnc.html >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 30s
+  portal:
+    image: ursim-portal:1.0.0
+    build:
+      context: portal
+    env_file:
+      - ${ENV_FILE:-.env}
+    environment:
+      PORT: "8080"
+      NOVNC_UPSTREAM: http://ursim:6080
+    ports:
+      - "${PORTAL_PORT:-8080}:8080"
+    depends_on:
+      ursim:
+        condition: service_healthy
+    restart: unless-stopped

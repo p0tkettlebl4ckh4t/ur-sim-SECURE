@@ -1,0 +1,6 @@
+.env
+.git
+.gitignore
+*.tar
+node_modules
+portal/node_modules

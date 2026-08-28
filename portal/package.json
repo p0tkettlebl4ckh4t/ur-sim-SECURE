@@ -1,0 +1,16 @@
+{
+	"name": "ursim-pin-portal",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Server-side PIN gate and noVNC reverse proxy for URSim",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js"
+	},
+	"dependencies": {
+		"http-proxy": "1.18.1"
+	},
+	"engines": {
+		"node": ">=22"
+	}
+}
